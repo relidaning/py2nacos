@@ -28,10 +28,3 @@ def heartbeat_to_nacos(nacos_url, service_name, ip, port):
     requests.put(nacos_url + heartbeat_suffix, data={'serviceName': service_name, 'ip': ip, 'port': port}).text
     time.sleep(5)
     heartbeat_to_nacos(nacos_url, service_name, ip, port)
-
-nacos_url='http://82.157.147.8:8848/nacos'
-service_name='checkin'
-ip='127.0.0.1'
-port=5020
-
-print(register_to_nacos(nacos_url, service_name, ip, port))
