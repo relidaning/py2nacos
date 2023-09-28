@@ -25,6 +25,6 @@ def register_to_nacos(nacos_url, service_name, ip, port):
 
 
 def heartbeat_to_nacos(nacos_url, service_name, ip, port):
-    requests.put(nacos_url + heartbeat_suffix, data={'serviceName': service_name, 'ip': ip, 'port': port}).text
-    time.sleep(5)
-    heartbeat_to_nacos(nacos_url, service_name, ip, port)
+    while True:
+        requests.put(nacos_url + heartbeat_suffix, data={'serviceName': service_name, 'ip': ip, 'port': port}).text
+        time.sleep(5)
