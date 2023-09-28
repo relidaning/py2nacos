@@ -16,16 +16,22 @@ def request_from_nacos(nacos_url, service_name):
 
 
 import time
+import threading
 def register_to_nacos(nacos_url, service_name, ip, port):
     result = requests.post(nacos_url + register_service_suffix,
                            data={'serviceName': service_name, 'ip': ip, 'port': port}).text
-    while True:
-        heartbeat_to_nacos(nacos_url, service_name, ip, port)
-        time.sleep(5)
+    threading.Thread(target=heartbeat_to_nacos, args=(nacos_url, service_name, ip, port)).start()
     return result
 
 
 def heartbeat_to_nacos(nacos_url, service_name, ip, port):
-    result = requests.put(nacos_url + heartbeat_suffix,
-                           data={'serviceName': service_name, 'ip': ip, 'port': port}).text
-    return result
+    requests.put(nacos_url + heartbeat_suffix, data={'serviceName': service_name, 'ip': ip, 'port': port}).text
+    time.sleep(5)
+    heartbeat_to_nacos(nacos_url, service_name, ip, port)
+
+nacos_url='http://82.157.147.8:8848/nacos'
+service_name='checkin'
+ip='127.0.0.1'
+port=5020
+
+print(register_to_nacos(nacos_url, service_name, ip, port))
