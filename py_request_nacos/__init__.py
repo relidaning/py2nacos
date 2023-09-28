@@ -18,6 +18,7 @@ def request_from_nacos(nacos_url, service_name):
 def register_to_nacos(nacos_url, service_name, ip, port):
     result = requests.post(nacos_url + register_service_suffix,
                            data={'serviceName': service_name, 'ip': ip, 'port': port}).text
+    heartbeat_to_nacos(nacos_url, service_name, ip, port)
     return result
 
 
