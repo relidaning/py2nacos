@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='py-request-nacos',
-    version='0.0.6',
+    version='0.0.7',
     author='lidaning',
     author_email='453882101@qq.com',
     description='request service from nacos',
