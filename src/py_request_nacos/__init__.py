@@ -7,8 +7,6 @@ heartbeat_suffix='/v1/ns/instance/beat'
 request_service_suffix='/v1/ns/instance/list'
 
 
-
-
 def request_from_nacos(nacos_url, service_name):
     result = requests.get(nacos_url + request_service_suffix, params={'serviceName': service_name}).text
     result_json = json.loads(result)
@@ -17,22 +15,16 @@ def request_from_nacos(nacos_url, service_name):
     return 'http://'+host['ip']+':'+str(host['port'])
 
 
+import time
+import threading
 def register_to_nacos(nacos_url, service_name, ip, port):
     result = requests.post(nacos_url + register_service_suffix,
                            data={'serviceName': service_name, 'ip': ip, 'port': port}).text
+    threading.Thread(target=heartbeat_to_nacos, args=(nacos_url, service_name, ip, port)).start()
     return result
 
 
 def heartbeat_to_nacos(nacos_url, service_name, ip, port):
-    result = requests.post(nacos_url + heartbeat_suffix,
-                           data={'serviceName': service_name, 'ip': ip, 'port': port}).text
-    return result
-
-
-nacos_url='http://82.157.147.8:8848/nacos'
-service_name='xxx'
-print(register_to_nacos(nacos_url, service_name, '127.0.0.1', '5020'))
-import time
-while(True):
-    print(heartbeat_to_nacos(nacos_url, service_name, '127.0.0.1', '5020'))
-    time.sleep(5)
+    while True:
+        requests.put(nacos_url + heartbeat_suffix, data={'serviceName': service_name, 'ip': ip, 'port': port}).text
+        time.sleep(5)
