@@ -1,4 +1,4 @@
-# Py-request-nacos
+# Py2nacos
 A tool that allows an app registers itself with Nacos.
 
 ## Fetures
@@ -8,13 +8,13 @@ Send the heartbeat to nacos every 5 seconds.
 
 ## Usages
 ```python
-pip install py-request-nacos
+pip install py2nacos
 ```
-```angular2html
+```python
 NACOS_SERVER_URL='http://localhost:8848/nacos'
 SERVICE_NAME='myapp'
 SERVICE_IP=127.0.0.1
 PORT=5000
-from py_request_nacos import register_to_nacos
+from py2nacos import register_to_nacos
 register_to_nacos(NACOS_SERVER_URL, SERVICE_NAME, SERVICE_IP, PORT)
 ```
